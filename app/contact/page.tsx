@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import styled from "styled-components";
@@ -30,115 +30,117 @@ export default function Contact() {
   }, [activeContact]);
 
   return (
-    <ContactStyles>
-      <div className="container">
-        <div className="section-1">
-          <h2>Contact us</h2>
-          <p>
-            Please let us know if you have any questions or if you would like to
-            schedule an appointment.
-          </p>
-          <SelectContact
-            activeContact={activeContact}
-            setActiveContact={setActiveContact}
-          />
-        </div>
-        <div className="section-2">
-          <ContactForm activeContact={activeContact} />
-        </div>
-        <div className="section-3">
-          <div className="store-details">
-            {contactDetails.image && (
-              <div className="store-img">
-                <Image
-                  src={contactDetails.image}
-                  alt={`${contactDetails.name} front`}
-                  width={800}
-                  height={437}
-                />
+    <Suspense>
+      <ContactStyles>
+        <div className="container">
+          <div className="section-1">
+            <h2>Contact us</h2>
+            <p>
+              Please let us know if you have any questions or if you would like
+              to schedule an appointment.
+            </p>
+            <SelectContact
+              activeContact={activeContact}
+              setActiveContact={setActiveContact}
+            />
+          </div>
+          <div className="section-2">
+            <ContactForm activeContact={activeContact} />
+          </div>
+          <div className="section-3">
+            <div className="store-details">
+              {contactDetails.image && (
+                <div className="store-img">
+                  <Image
+                    src={contactDetails.image}
+                    alt={`${contactDetails.name} front`}
+                    width={800}
+                    height={437}
+                  />
+                </div>
+              )}
+              <div className="store-contact-info">
+                <div>
+                  <h3>{contactDetails.name}</h3>
+                  {contactDetails.tag && <p>{contactDetails.tag}</p>}
+                  {contactDetails.address && (
+                    <p>
+                      {contactDetails.address.street}
+                      <br />
+                      {contactDetails.address.city},{" "}
+                      {contactDetails.address.state}{" "}
+                      {contactDetails.address.zipcode}
+                    </p>
+                  )}
+                  {contactDetails.phone && (
+                    <p>
+                      Phone:{" "}
+                      <a
+                        href={`tel:+1${contactDetails.phone}`}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {formatPhoneNumber(contactDetails.phone)}
+                      </a>
+                    </p>
+                  )}
+                  {contactDetails.mapsUrl && (
+                    <p>
+                      <a
+                        href={contactDetails.mapsUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="directions"
+                      >
+                        Directions
+                      </a>
+                    </p>
+                  )}
+                </div>
               </div>
-            )}
-            <div className="store-contact-info">
-              <div>
-                <h3>{contactDetails.name}</h3>
-                {contactDetails.tag && <p>{contactDetails.tag}</p>}
-                {contactDetails.address && (
-                  <p>
-                    {contactDetails.address.street}
-                    <br />
-                    {contactDetails.address.city},{" "}
-                    {contactDetails.address.state}{" "}
-                    {contactDetails.address.zipcode}
-                  </p>
-                )}
-                {contactDetails.phone && (
-                  <p>
-                    Phone:{" "}
-                    <a
-                      href={`tel:+1${contactDetails.phone}`}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {formatPhoneNumber(contactDetails.phone)}
-                    </a>
-                  </p>
-                )}
-                {contactDetails.mapsUrl && (
-                  <p>
-                    <a
-                      href={contactDetails.mapsUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="directions"
-                    >
-                      Directions
-                    </a>
-                  </p>
-                )}
-              </div>
+              {contactDetails.storeHours && (
+                <div className="store-hours">
+                  <h3>Store Hours</h3>
+                  <ul>
+                    <li>
+                      <span>Monday</span>
+                      {contactDetails.storeHours}
+                    </li>
+                    <li>
+                      <span>Tuesday</span>
+                      {contactDetails.storeHours}
+                    </li>
+                    <li>
+                      <span>Wednesday</span>
+                      {contactDetails.storeHours}
+                    </li>
+                    <li>
+                      <span>Thursday</span>
+                      {contactDetails.storeHours}
+                    </li>
+                    <li>
+                      <span>Friday</span>
+                      {contactDetails.storeHours}
+                    </li>
+                    <li>
+                      <span>Saturday</span>
+                      Closed
+                    </li>
+                    <li>
+                      <span>Sunday</span>
+                      Closed
+                    </li>
+                    <li className="italic">
+                      *After hours appointments available
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
-            {contactDetails.storeHours && (
-              <div className="store-hours">
-                <h3>Store Hours</h3>
-                <ul>
-                  <li>
-                    <span>Monday</span>
-                    {contactDetails.storeHours}
-                  </li>
-                  <li>
-                    <span>Tuesday</span>
-                    {contactDetails.storeHours}
-                  </li>
-                  <li>
-                    <span>Wednesday</span>
-                    {contactDetails.storeHours}
-                  </li>
-                  <li>
-                    <span>Thursday</span>
-                    {contactDetails.storeHours}
-                  </li>
-                  <li>
-                    <span>Friday</span>
-                    {contactDetails.storeHours}
-                  </li>
-                  <li>
-                    <span>Saturday</span>
-                    Closed
-                  </li>
-                  <li>
-                    <span>Sunday</span>
-                    Closed
-                  </li>
-                  <li className="italic">
-                    *After hours appointments available
-                  </li>
-                </ul>
-              </div>
-            )}
           </div>
         </div>
-      </div>
-    </ContactStyles>
+      </ContactStyles>
+    </Suspense>
   );
 }
 
