@@ -30,7 +30,7 @@ export default function Contact() {
   }, [activeContact]);
 
   return (
-    <Suspense>
+    <Suspense fallback={<div />}>
       <ContactStyles>
         <div className="container">
           <div className="section-1">
