@@ -1,6 +1,10 @@
-"use client";
+import { Metadata } from "next";
 
 import PageShell from "@/components/PageShell";
+
+export const metadata: Metadata = {
+  title: "Our History | Zabel Monuments",
+};
 
 export default function History() {
   return (

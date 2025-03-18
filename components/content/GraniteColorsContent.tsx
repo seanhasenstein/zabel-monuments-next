@@ -10,7 +10,7 @@ type Props = {
   images: GraniteColorImageMetadata[];
 };
 
-export default function GraniteColors({ images }: Props) {
+export default function GraniteColorsContent({ images }: Props) {
   return (
     <PageShell>
       <GraniteColorsStyles>
