@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import styled from "styled-components";
 
 import Header from "./Header";
@@ -12,7 +13,9 @@ type Props = {
 export default function Layout({ children }: Props) {
   return (
     <LayoutStyles>
-      <Header />
+      <Suspense>
+        <Header />
+      </Suspense>
       {children}
       <Footer />
     </LayoutStyles>
