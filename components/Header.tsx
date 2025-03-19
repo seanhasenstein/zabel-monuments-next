@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
@@ -35,6 +35,7 @@ const secondaryNavItems = [
 export default function Header() {
   const [open, setOpen] = useState(false);
 
+  const searchParams = useSearchParams();
   const pathname = usePathname();
   const prevPathRef = useRef(pathname);
 
@@ -58,7 +59,12 @@ export default function Header() {
   };
 
   const getSecondaryNavClass = (slug: string, pathname: string) => {
-    if (slug === "/contact?store=ask-our-cm" && pathname.includes("/contact")) {
+    console.log(pathname);
+    if (
+      slug === "/contact?store=ask-our-cm" &&
+      pathname.includes("/contact") &&
+      searchParams.get("store") === "ask-our-cm"
+    ) {
       return "active";
     }
     if (pathname.includes(slug)) {
