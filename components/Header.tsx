@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import styled from "styled-components";
@@ -34,11 +35,61 @@ const secondaryNavItems = [
 export default function Header() {
   const [open, setOpen] = useState(false);
 
+  const pathname = usePathname();
+  const prevPathRef = useRef(pathname);
+
+  const getPrimaryNavClass = (slug: string, pathname: string) => {
+    if (slug === "/" && pathname === "/") {
+      return "active";
+    }
+    if (slug !== "/" && pathname.includes(slug)) {
+      return "active";
+    }
+    if (slug === "/contact?store=greenbay" && pathname.includes("/contact")) {
+      return "active";
+    }
+    if (
+      slug === "/gallery/individual-monuments" &&
+      pathname.includes("/gallery")
+    ) {
+      return "active";
+    }
+    return "";
+  };
+
+  const getSecondaryNavClass = (slug: string, pathname: string) => {
+    if (slug === "/contact?store=ask-our-cm" && pathname.includes("/contact")) {
+      return "active";
+    }
+    if (pathname.includes(slug)) {
+      return "active";
+    }
+    return "";
+  };
+
+  useEffect(() => {
+    // Only run when pathname changes, not on initial render
+    if (prevPathRef.current !== pathname) {
+      // Close menu after navigation is complete
+      setOpen(false);
+
+      // Smooth scroll to top of page
+      window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Update the previous pathname reference
+      prevPathRef.current = pathname;
+    }
+  }, [pathname]);
+
   return (
     <HeaderStyles>
       <div className="secondary-nav">
         {secondaryNavItems.map((i) => (
-          <Link key={i.id} href={i.slug}>
+          <Link
+            key={i.id}
+            href={i.slug}
+            className={getSecondaryNavClass(i.slug, pathname)}
+          >
             {i.text}
           </Link>
         ))}
@@ -100,7 +151,17 @@ export default function Header() {
               <ul>
                 {primaryNavItems.map((i) => (
                   <li key={i.id}>
-                    <Link href={`${i.slug}`}>{i.text}</Link>
+                    <Link
+                      href={`${i.slug}`}
+                      onClick={() => {
+                        if (i.slug.includes(pathname)) {
+                          setOpen(false);
+                        }
+                      }}
+                      className={getPrimaryNavClass(i.slug, pathname)}
+                    >
+                      {i.text}
+                    </Link>
                   </li>
                 ))}
               </ul>
@@ -108,7 +169,17 @@ export default function Header() {
             <ul className="mobile-secondary-nav">
               {secondaryNavItems.map((i) => (
                 <li key={i.id}>
-                  <Link href={i.slug}>{i.text}</Link>
+                  <Link
+                    href={i.slug}
+                    onClick={() => {
+                      if (i.slug.includes(pathname)) {
+                        setOpen(false);
+                      }
+                    }}
+                    className={getSecondaryNavClass(i.slug, pathname)}
+                  >
+                    {i.text}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -134,7 +205,8 @@ const HeaderStyles = styled.header`
       letter-spacing: 0.025em;
       color: rgba(255, 255, 255, 0.9);
 
-      &:hover {
+      &:hover,
+      &.active {
         text-decoration: underline;
       }
 
@@ -227,7 +299,8 @@ const HeaderStyles = styled.header`
       color: rgba(255, 255, 255, 0.7);
       transition: color 200ms ease-in-out;
 
-      &:hover {
+      &:hover,
+      &.active {
         color: #fff;
       }
 
@@ -354,6 +427,12 @@ const HeaderStyles = styled.header`
 
         &:last-of-type {
           border-bottom: none;
+        }
+
+        &.active,
+        &.active:hover {
+          color: #fff;
+          text-decoration: underline;
         }
 
         &:hover {
