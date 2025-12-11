@@ -13,6 +13,7 @@ export type FormState = {
   customerName: string | null;
   email: string | null;
   phone: string | null;
+  companyName: string | null;
   message: string | null;
 } | null;
 
@@ -29,7 +30,23 @@ async function sendContactMessage(
   const customerName = formData.get("customerName") as string;
   const email = formData.get("email") as string;
   const phone = formData.get("phone") as string;
+  const honeypot = formData.get("companyName") as string;
   const message = formData.get("message") as string;
+
+  if (honeypot && honeypot.trim().length > 0) {
+    console.warn(
+      `Spam detected for customer: ${customerName}, email: ${email}, phone: ${phone}, store: ${store}, companyName/honeypot: ${honeypot}, message: ${message}`
+    );
+    return {
+      error: "",
+      store: "",
+      customerName: "",
+      email: "",
+      phone: "",
+      companyName: "",
+      message: "",
+    };
+  }
 
   const storesEmailMap = {
     greenbay: process.env.GREENBAY_STORE_EMAIL as string,
@@ -80,6 +97,7 @@ async function sendContactMessage(
       customerName,
       email,
       phone,
+      companyName: honeypot,
       message,
     };
   }

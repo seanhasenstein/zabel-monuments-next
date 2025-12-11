@@ -60,6 +60,16 @@ export default function ContactForm({ activeContact }: Props) {
             className="form-item"
           />
         </div>
+        <div className="form-item sr-only">
+          <label htmlFor="companyName">Your company name</label>
+          <input
+            defaultValue={state?.companyName}
+            id="companyName"
+            name="companyName"
+            tabIndex={-1}
+            autoComplete="off"
+          />
+        </div>
         <div className="form-item">
           <label htmlFor="message">How can we help you?</label>
           <textarea
