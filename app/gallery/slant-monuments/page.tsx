@@ -6,6 +6,8 @@ import Gallery from "@/components/Gallery";
 
 export const metadata: Metadata = {
   title: "Slant Monuments Gallery | Zabel Monuments",
+  description:
+    "Explore our slant monuments gallery showcasing angled granite memorials that offer a classic, low-profile tribute for loved ones.",
 };
 
 export default async function SlantsGalleryPage() {

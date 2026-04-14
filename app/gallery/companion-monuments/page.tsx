@@ -6,6 +6,8 @@ import Gallery from "@/components/Gallery";
 
 export const metadata: Metadata = {
   title: "Companion Monuments Gallery | Zabel Monuments",
+  description:
+    "Browse our gallery of companion monuments designed to honor couples and loved ones together with personalized granite memorials.",
 };
 
 export default async function CompanionsGalleryPage() {
