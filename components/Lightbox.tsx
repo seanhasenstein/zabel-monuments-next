@@ -69,7 +69,7 @@ export default function Lightbox({
               onClick={() => setSelectedImg((prevIndex) => prevIndex - 1)}
               className="previous-button"
               ref={prevButton}
-              area-label="Previous Image"
+              aria-label="Previous Image"
               disabled={selectedImg === 0}
             >
               <span className="sr-only">Previous Image</span>
