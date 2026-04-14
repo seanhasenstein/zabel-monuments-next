@@ -19,7 +19,7 @@ export type FormState = {
 
 async function sendContactMessage(
   _prevState: FormState | null,
-  formData: FormData
+  formData: FormData,
 ) {
   const messageId = createMessageId();
   const store = formData.get("store") as
@@ -32,19 +32,34 @@ async function sendContactMessage(
   const phone = formData.get("phone") as string;
   const honeypot = formData.get("companyName") as string;
   const message = formData.get("message") as string;
+  const formLoadedAt = Number(formData.get("formLoadedAt"));
+  const elapsedMs = formLoadedAt ? Date.now() - formLoadedAt : Infinity;
 
   if (honeypot && honeypot.trim().length > 0) {
     console.warn(
-      `Spam detected for customer: ${customerName}, email: ${email}, phone: ${phone}, store: ${store}, companyName/honeypot: ${honeypot}, message: ${message}`
+      `Spam detected (honeypot) for customer: ${customerName}, email: ${email}, phone: ${phone}, store: ${store}, companyName/honeypot: ${honeypot}, message: ${message}`,
     );
+    redirect("/contact/success");
+  }
+
+  if (elapsedMs < 2000) {
+    console.warn(
+      `Spam detected (submitted in ${elapsedMs}ms) for customer: ${customerName}, email: ${email}, phone: ${phone}, store: ${store}, message: ${message}`,
+    );
+    redirect("/contact/success");
+  }
+
+  const trimmedMessage = message.trim();
+  if (trimmedMessage.split(/\s+/).filter(Boolean).length < 2) {
     return {
-      error: "",
-      store: "",
-      customerName: "",
-      email: "",
-      phone: "",
-      companyName: "",
-      message: "",
+      error:
+        "Please provide a more detailed message so we can better assist you.",
+      store,
+      customerName,
+      email,
+      phone,
+      companyName: honeypot,
+      message,
     };
   }
 
@@ -58,10 +73,10 @@ async function sendContactMessage(
   const storeToEmail = storesEmailMap[store];
 
   const rawStorePhoneNumber = contactInfo.find(
-    (info) => info.contact === store
+    (info) => info.contact === store,
   )?.phone;
   const formattedStorePhoneNumber = formatPhoneNumber(
-    rawStorePhoneNumber as string
+    rawStorePhoneNumber as string,
   );
 
   try {

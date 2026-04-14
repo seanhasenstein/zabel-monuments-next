@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState, useTransition } from "react";
+import { useActionState, useRef, useState, useTransition } from "react";
 import styled from "styled-components";
 
 import PhoneInput from "./PhoneInput";
@@ -18,10 +18,12 @@ export default function ContactForm({ activeContact }: Props) {
   const [state, formAction] = useActionState(sendContactMessage, null);
   const [isPending, startTransition] = useTransition();
   const [phoneNumber, setPhoneNumber] = useState(state?.phone || "");
+  const formLoadedAt = useRef(Date.now());
 
   const handleSubmit = (formData: FormData) => {
     formData.set("store", activeContact);
     formData.set("phone", phoneNumber);
+    formData.set("formLoadedAt", String(formLoadedAt.current));
 
     startTransition(() => {
       formAction(formData);

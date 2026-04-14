@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Metadata } from "next";
 
-import ContactContent from "@/components/content/ConatctContent";
+import ContactContent from "@/components/content/ContactContent";
 
 export const metadata: Metadata = {
   title: "Contact Us | Zabel Monuments",
