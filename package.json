@@ -12,9 +12,7 @@
     "@aws-sdk/client-s3": "^3.758.0",
     "classnames": "^2.5.1",
     "date-fns-tz": "^3.2.0",
-    "dotenv": "^16.4.7",
     "next": "^15.2.6",
-    "node-fetch": "^3.3.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "styled-components": "^6.1.15"
