@@ -1,12 +1,3 @@
-import * as dotenv from "dotenv";
-import fetch, { FormData } from "node-fetch";
-
-dotenv.config();
-
-const AUTHTOKEN = `Basic ${Buffer.from(
-  `api:${process.env.MAILGUN_API_KEY}`
-).toString(`base64`)}`;
-
 type SendEmail = {
   to?: string;
   from?: string;
@@ -17,6 +8,22 @@ type SendEmail = {
   replyTo: string;
 };
 
+function getMailgunAuthToken(): string {
+  const key = process.env.MAILGUN_API_KEY;
+  if (!key) {
+    throw new Error("MAILGUN_API_KEY is not set");
+  }
+  return `Basic ${Buffer.from(`api:${key}`).toString("base64")}`;
+}
+
+function getMailgunDomain(): string {
+  const domain = process.env.MAILGUN_DOMAIN;
+  if (!domain) {
+    throw new Error("MAILGUN_DOMAIN is not set");
+  }
+  return domain;
+}
+
 async function sendEmail({
   to,
   from,
@@ -26,41 +33,38 @@ async function sendEmail({
   bcc,
   replyTo,
 }: SendEmail) {
-  try {
-    if (!to || !from) {
-      throw new Error("Missing required fields");
-    }
+  if (!to || !from) {
+    throw new Error("Missing required fields");
+  }
 
-    const form = new FormData();
-    const mailgunUrl = `https://api.mailgun.net/v3/${process.env.MAILGUN_DOMAIN}/messages`;
+  const form = new FormData();
+  const mailgunUrl = `https://api.mailgun.net/v3/${getMailgunDomain()}/messages`;
 
-    form.append("to", to);
-    form.append("from", from);
-    form.append("subject", subject);
-    form.append("text", text);
-    form.append("html", html);
-    if (bcc) form.append("bcc", bcc);
-    form.append("h:Reply-To", replyTo);
+  form.append("to", to);
+  form.append("from", from);
+  form.append("subject", subject);
+  form.append("text", text);
+  form.append("html", html);
+  if (bcc) form.append("bcc", bcc);
+  form.append("h:Reply-To", replyTo);
 
-    const response = await fetch(mailgunUrl, {
-      method: "post",
-      body: form,
-      headers: {
-        Authorization: AUTHTOKEN,
-      },
-    });
+  const response = await fetch(mailgunUrl, {
+    method: "post",
+    body: form,
+    headers: {
+      Authorization: getMailgunAuthToken(),
+    },
+  });
 
-    const data = await response.json();
+  const data = await response.json();
 
-    return data;
-  } catch (error) {
-    console.error(error);
+  if (!response.ok) {
     throw new Error(
-      error instanceof Error
-        ? error.message
-        : "An unknown error occurred sending the message."
+      `Mailgun send failed (${response.status}): ${JSON.stringify(data)}`,
     );
   }
+
+  return data;
 }
 
 export { sendEmail };
