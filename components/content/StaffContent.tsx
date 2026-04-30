@@ -33,12 +33,6 @@ const profiles = [
     image: "/images/staff/jamie.jpg",
   },
   {
-    id: 6,
-    name: "Jennifer Wynveen",
-    bio: [],
-    image: "/images/staff/jennifer.jpg",
-  },
-  {
     id: 4,
     name: "Craig Rozmarynowski",
     bio: [
