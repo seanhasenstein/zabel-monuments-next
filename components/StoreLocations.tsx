@@ -36,7 +36,7 @@ const stores = [
     },
     addressUrl: "https://goo.gl/maps/anYiPUzFSf1rEFku5",
     phone: "(920) 684-3829",
-    hours: "Mon-Fri 8:00am-4:30pm",
+    hours: "Mon-Fri 9:00am-4:30pm",
   },
   {
     id: 3,
@@ -164,9 +164,11 @@ const StoreLocationStyles = styled.section`
     flex-direction: column;
     background-color: #fff;
     border-radius: 0.125rem;
-    box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px,
+    box-shadow:
+      rgb(255, 255, 255) 0px 0px 0px 0px,
       rgba(40, 65, 96, 0.05) 0px 0px 0px 1px,
-      rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
+      rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
+      rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
 
     .img {
       width: 100%;
@@ -219,7 +221,8 @@ const StoreLocationStyles = styled.section`
       justify-content: center;
       align-items: center;
       background-color: #fff;
-      box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px,
+      box-shadow:
+        rgb(255, 255, 255) 0px 0px 0px 0px,
         rgba(17, 24, 39, 0.05) 0px 0px 0px 1px,
         rgba(0, 0, 0, 0.1) 0px 4px 6px -1px,
         rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
@@ -334,7 +337,9 @@ const StoreLocationStyles = styled.section`
 
     &:focus-visible {
       border: 1px solid #f1f5f9;
-      box-shadow: #fff 0px 0px 0px 2px, #1967d2 0px 0px 0px 4px,
+      box-shadow:
+        #fff 0px 0px 0px 2px,
+        #1967d2 0px 0px 0px 4px,
         rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
     }
   }
