@@ -32,7 +32,7 @@ export const contactInfo = [
       zipcode: "54220",
     },
     phone: "9206843829",
-    storeHours: "8:00am-4:30pm",
+    storeHours: "9:00am-4:30pm",
     image: "/images/manitowoc.jpg",
     mapsUrl: "https://goo.gl/maps/KN9Svpfyb18hJAbM7",
   },
